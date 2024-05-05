@@ -2,25 +2,24 @@ OpenSfM ![Docker workflow](https://github.com/mapillary/opensfm/workflows/Docker
 =======
 
 ## Overview
-OpenSfM is a Structure from Motion library written in Python. The library serves as a processing pipeline for reconstructing camera poses and 3D scenes from multiple images. It consists of basic modules for Structure from Motion (feature detection/matching, minimal solvers) with a focus on building a robust and scalable reconstruction pipeline. It also integrates external sensor (e.g. GPS, accelerometer) measurements for geographical alignment and robustness. A JavaScript viewer is provided to preview the models and debug the pipeline.
+This is a sfm server using OpenSfM. Currently supports REST services.
 
-<p align="center">
-  <img src="https://opensfm.org/docs/_images/berlin_viewer.jpg" />
-</p>
-
-Checkout this [blog post with more demos](http://blog.mapillary.com/update/2014/12/15/sfm-preview.html)
+Checkout this for more about [OpenSfM](https://opensfm.org/docs/using.html)
 
 
 ## Getting Started
 
-* [Building the library][]
-* [Running a reconstruction][]
-* [Documentation][]
-
-
-[Building the library]: https://opensfm.org/docs/building.html (OpenSfM building instructions)
-[Running a reconstruction]: https://opensfm.org/docs/using.html (OpenSfM usage)
-[Documentation]: https://opensfm.org/docs/ (OpenSfM documentation)
+- [Setup](https://opensfm.org/docs/building.html) (no need to build the docs)
+- [Construction](https://opensfm.org/docs/using.html)
+  + Setup viewer: `./viewer/node_modules.sh`
+  + Reconstruct images: `bin/opensfm_run_all data/berlin`
+  + [Optional] Dense point clouds:
+  ```
+    bin/opensfm undistort data/berlin
+    bin/opensfm compute_depthmaps data/berlin
+  ```
+  + Start the server and view: `python3 viewer/server.py -d data/berlin`
+  + [Optional - Do if densing point]: Open Meshlab and import the mesh file `data/berlin/unidtorted/depthmaps/merged.ply`
 
 ## License
 OpenSfM is BSD-style licensed, as found in the LICENSE file.  See also the Facebook Open Source [Terms of Use][] and [Privacy Policy][]
