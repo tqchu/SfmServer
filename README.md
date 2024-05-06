@@ -9,6 +9,7 @@ Checkout this for more about [OpenSfM](https://opensfm.org/docs/using.html)
 
 ## Getting Started
 
+- Clone the repo recursively: `git clone --recursive https://github.com/tqchu/SfmServer`
 - [Setup](https://opensfm.org/docs/building.html) (no need to build the docs)
 - [Construction](https://opensfm.org/docs/using.html)
   + Setup viewer: `./viewer/node_modules.sh`
@@ -20,7 +21,14 @@ Checkout this for more about [OpenSfM](https://opensfm.org/docs/using.html)
   ```
   + Start the server and view: `python3 viewer/server.py -d data/berlin`
   + [Optional - Do if densing point]: Open Meshlab and import the mesh file `data/berlin/unidtorted/depthmaps/merged.ply`
-
+- Run rest server:
+  + 
+    ```
+    cd rest
+    flask run
+    ```
+  + Checkout: http://127.0.0.1:5000
+  + View the apidocs at: `api_doc/openapi.yaml`
 ## License
 OpenSfM is BSD-style licensed, as found in the LICENSE file.  See also the Facebook Open Source [Terms of Use][] and [Privacy Policy][]
 
