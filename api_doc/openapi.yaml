@@ -1,0 +1,67 @@
+openapi: 3.0.0
+info:
+  title: SFM Server
+  version: 1.0.0
+
+servers:
+  - url: 'http://localhost:8080'
+paths:
+  /upload:
+    post:
+      summary: Upload an image
+      description: Endpoint for uploading images using HTML form-data.
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+                - images
+              properties:
+                images:
+                  type: array
+                  items:
+                    type: string
+                    format: binary
+                sessionId:
+                  type: string
+      responses:
+        '200':
+          description: Image uploaded successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - sessionId
+                properties:
+                  sessionId:
+                    type: string
+  /processing/{session_id}:
+    post:
+      summary: Process an image
+      description: Endpoint for processing images based on a session ID.
+      parameters:
+        - name: session_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Image processing completed
+  /ply/{session_id}:
+    get:
+      summary: Download a PLY file
+      description: Endpoint for downloading a PLY file based on a session ID.
+      parameters:
+        - name: session_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: PLY file download successful
+          content:
+            application/octet-stream: { }

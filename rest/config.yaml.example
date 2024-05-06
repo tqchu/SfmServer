@@ -1,0 +1,7 @@
+# config.yaml
+db:
+  host: localhost
+  port: 5432
+  dbname: mydb
+  user: myuser
+  password: mypassword

@@ -18,3 +18,9 @@ xmltodict==0.10.2
 wheel
 opencv-python==4.5.1.48 ; sys_platform == "win32"
 opencv-python ; sys_platform == "linux"
+flask-sqlalchemy==3.1.1
+greenlet==3.0.3
+sqlalchemy==2.0.29
+alembic==1.13.1
+flask-migrate==4.0.7
+psycopg2-binary==2.9.9
