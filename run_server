@@ -1,0 +1,3 @@
+source opensfm/bin/activate
+
+flask run
