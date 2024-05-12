@@ -10,6 +10,13 @@ Checkout this for more about [OpenSfM](https://opensfm.org/docs/using.html)
 3.8
 3.10 will not work
 
+## Workaround
+```
+chmod +x set_up.sh
+./set_up.sh
+./run_server
+```
+
 ## Getting Started
 
 - Clone the repo recursively: `git clone --recursive https://github.com/tqchu/SfmServer`
