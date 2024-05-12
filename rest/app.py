@@ -7,10 +7,13 @@ import uuid
 
 from flask import Flask, request, jsonify, send_file
 import yaml
-from flask_migrate import Migrate
+# from flask_migrate import Migrate
 
 app = Flask(__name__)
 
+from flask_cors import CORS, cross_origin
+
+CORS(app)  # This will enable CORS for all routes
 
 def load_config():
     try:
@@ -21,21 +24,22 @@ def load_config():
         raise Exception("config.yaml not found. Please create the file.")
 
 
-config = load_config()
+# config = load_config()
+#
+# # Set up your database connection using the loaded configuration
+# app.config[
+#     'SQLALCHEMY_DATABASE_URI'] = f"postgresql://{config['db']['user']}:{config['db']['password']}@{config['db']['host']}:{config['db']['port']}/{config['db']['dbname']}"
+# app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+#
+# # Initialize SQLAlchemy
+# from flask_sqlalchemy import SQLAlchemy
+#
+# db = SQLAlchemy(app)
+#
+# migrate = Migrate(app, db)
 
-# Set up your database connection using the loaded configuration
-app.config[
-    'SQLALCHEMY_DATABASE_URI'] = f"postgresql://{config['db']['user']}:{config['db']['password']}@{config['db']['host']}:{config['db']['port']}/{config['db']['dbname']}"
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-# Initialize SQLAlchemy
-from flask_sqlalchemy import SQLAlchemy
-
-db = SQLAlchemy(app)
-
-migrate = Migrate(app, db)
-
-
+@cross_origin()
 @app.route('/upload', methods=['POST'])
 def upload_image():
     try:
@@ -71,6 +75,7 @@ def upload_image():
         return jsonify({"error": str(e)}), 500
 
 
+@cross_origin()
 @app.route('/processing/<session_id>', methods=['POST'])
 def process_image(session_id):
     try:
@@ -111,23 +116,30 @@ def process_image(session_id):
             print(depthmaps_command)
             return jsonify({"error": "An error occured: " + result.stderr.decode()}), 500
 
-        return jsonify({"message": "Image processing completed"}), 200
+        return jsonify({"ply_url": f"http://127.0.0.1:5000/ply/{session_id}?download=false"}), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
 
+@cross_origin()
 @app.route('/ply/<session_id>', methods=['GET'])
 def download_ply_file(session_id):
     try:
         file_path = '../data/' + session_id + '/undistorted/depthmaps/merged.ply'
+        download = request.args.get('download', default='true', type=str)
 
-        # For demonstration, we'll serve it directly from memory
-        return send_file(
-            file_path,
-            mimetype='application/octet-stream',
-            as_attachment=True,
-            download_name="result.ply",
-        )
+        if download.lower() == 'true':
+            # For demonstration, we'll serve it directly from memory
+            return send_file(
+                file_path,
+                mimetype='application/octet-stream',
+                as_attachment=True,
+                download_name="result.ply",
+            )
+        else:
+            with open(file_path, 'r') as file:
+                data = file.read()
+            return data
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 

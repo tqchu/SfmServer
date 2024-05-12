@@ -6,6 +6,9 @@ This is a sfm server using OpenSfM. Currently supports REST services.
 
 Checkout this for more about [OpenSfM](https://opensfm.org/docs/using.html)
 
+## Recommended python version
+3.8
+3.10 will not work
 
 ## Getting Started
 
